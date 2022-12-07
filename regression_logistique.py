@@ -68,8 +68,7 @@ class Regression_logistique:
             parametres = self.recherche_hyper(x_train, t_train)
         else:
             print('Debut de l\'entrainement RegLogistique sans recherche d\'hyperparamètres','\n')
-            parametres = {'criterion': 'entropy', 'max_depth': self.prof_max, \
-                   'min_samples_leaf': self.msf, 'max_leaf_nodes': self.mfn}
+            parametres = {'penalty': self.penalty, 'tol': self.tol, 'solver': self.solver}
             
         self.classif = LogisticRegression(**parametres)
         

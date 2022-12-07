@@ -34,7 +34,7 @@ class GaussianBayes:
         Retourne un dictionnaire avec les meilleurs hyperparamètres
         """
         valeurs_liss = np.arange(0.5e-9,1e-8,0.5e-9)
-        p_grid = [{'alpha': valeurs_liss}]
+        p_grid = [{'var_smoothing': valeurs_liss}]
         
         cross_v = KFold(10, True) # validation croisée
             
@@ -64,7 +64,7 @@ class GaussianBayes:
             parametres = self.recherche_hyper(x_train, t_train)
         else:
             print('Debut de l\'entrainement GaussNB sans recherche d\'hyperparamètres','\n')
-            parametres = {'alpha': self.lissage}
+            parametres = {'var_smoothing': self.lissage}
             
         self.classif = GaussianNB(**parametres)
         

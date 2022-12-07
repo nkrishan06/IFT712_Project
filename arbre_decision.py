@@ -6,12 +6,9 @@
 # Hugo FREITAS COSTINHA (22 140 773)
 ####
 
-
 import numpy as np
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import RandomizedSearchCV, KFold
-
-
 
 class ArbreDecision:
     def __init__(self):
@@ -19,8 +16,9 @@ class ArbreDecision:
         Algorithme d'arbre de décision
         
         """
-        self.solver = 'svd' # Profondeur maximale du l'arbre
-        self.tol = 1e-4  # Nombre minimal d'échantillons dans une feuille
+        self.prof_max = 30 # Profondeur maximale du l'arbre
+        self.min_leaf = 3  # Nombre minimal d'échantillons dans une feuille
+        self.max_node = 110 # Nombre maximal de nodes de feuilles
     
     def recherche_hyper(self, x_tr, t_tr):
         """
@@ -32,17 +30,20 @@ class ArbreDecision:
         Méthode de Grid Search: 
             prof_max: Profondeur maximale entre 10 et 50
             msf: Nombre minimal de samples (données) dans une feuille entre 2 et 10
-            Mesure de la qualité de la séparation: giny et entropy
+            Mesure de la qualité de la séparation: giny, entropy et log_loss
         
         Retourne un dictionnaire avec les meilleurs hyperparamètres
         """
-        valeurs_tol = np.arange(0.5e-4,1e-3,0.5e-4)
-        p_grid = {'solver': ['svd','lsqr','eigen'], 'tol': valeurs_tol}
+        valeurs_prof = np.arange(10,50)
+        valeurs_mf = np.arange(2,10, dtype ='int')
+        valeur_mn = np.arange(80,140, dtype = int)
+        p_grid = {'criterion': ['gini','entropy','log_loss'], 'splitter' : ['best', 'random'], \
+                   'max_depth': valeurs_prof,'min_samples_leaf': valeurs_mf, 'max_leaf_nodes': valeur_mn}
         
         cross_v = KFold(10, True) # validation croisée
             
         # Recherche d'hyperparamètres
-        self.classif = RandomizedSearchCV(estimator=LinearDiscriminantAnalysis(),\
+        self.classif = RandomizedSearchCV(estimator=DecisionTreeClassifier(),\
                                           param_distributions=p_grid, n_iter=20, cv=cross_v)
         self.classif.fit(x_tr, t_tr)
         
@@ -67,10 +68,10 @@ class ArbreDecision:
             parametres = self.recherche_hyper(x_train, t_train)
         else:
             print('Debut de l\'entrainement AD sans recherche d\'hyperparamètres','\n')
-            parametres = {'criterion': 'entropy', 'max_depth': self.prof_max, \
-                   'min_samples_leaf': self.msf, 'max_leaf_nodes': self.mfn}
+            parametres = {'criterion': 'gini', 'splitter' : 'best', 'max_depth': self.prof_max,\
+                'min_samples_leaf': self.min_leaf, 'max_leaf_nodes': self.max_node}
             
-        self.classif = LinearDiscriminantAnalysis(**parametres)
+        self.classif = DecisionTreeClassifier(**parametres)
         
         print('Paramètres utilisés pour l\'entraînement AD :',\
               self.classif.get_params(),'\n')

@@ -19,8 +19,10 @@ class SupportVectorMachine:
         Algorithme de machines à vecteurs de support
         
         """
-        self.lamb = 2
-        self.noyau = 'rbf'
+        self.lamb = 1
+        self.degree = 3
+        self.kernel = 'rbf'
+        self.gamma = 'scale'
     
     def recherche_hyper(self, x_tr, t_tr):
         """
@@ -34,12 +36,8 @@ class SupportVectorMachine:
         Retourne une dictionaire avec le meilleur noyau et ses meilleurs hyperparamètres
         """
         valeurs_lamb = np.linspace(0.00001,2,30)
-        valeurs_b_sg = np.arange(1.,20.)
-        p_grid = {'kernel': ['rbf'], 'C': valeurs_lamb, 'gamma': ['scale','auto']}, \
-                      {'kernel': ['poly'], 'C': valeurs_lamb,\
-                       'degree': np.arange(2,7), 'coef0': np.arange(0.,10.,0.1)}, \
-                       {'kernel': ['sigmoid'], 'C': valeurs_lamb, \
-                       'coef0': np.arange(0,10), 'gamma': valeurs_b_sg}
+        p_grid = {'kernel': ['linear', 'poly', 'rbf', 'sigmoid'], 'C': valeurs_lamb, 'gamma': ['scale','auto'], \
+                        'degree': np.arange(2,7), 'coef0': np.arange(0.,10.,0.1)}
         
         cross_v = KFold(10, True) # Validation croisée
             
@@ -66,9 +64,9 @@ class SupportVectorMachine:
             parametres = self.recherche_hyper(x_train, t_train)
         else:
             print('Debut de l\'entrainement SVM sans recherche d\'hyperparamètres','\n')
-            parametres = {'kernel': self.noyau, 'C': self.lamb, 'gamma': 'scale'}
+            parametres = {'kernel': self.kernel, 'C': self.lamb, 'gamma': self.gamma, 'degree' : self.degree}
             
-        self.classif = svm.SVC(**parametres)
+        self.classif = SVC(**parametres)
         
         print('Paramètres utilisés pour l\'entraînement SVM :',\
               self.classif.get_params(),'\n')

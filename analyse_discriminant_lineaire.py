@@ -67,8 +67,7 @@ class Analyse_Discriminant_lineaire:
             parametres = self.recherche_hyper(x_train, t_train)
         else:
             print('Debut de l\'entrainement ADL sans recherche d\'hyperparamètres','\n')
-            parametres = {'criterion': 'entropy', 'max_depth': self.prof_max, \
-                   'min_samples_leaf': self.msf, 'max_leaf_nodes': self.mfn}
+            parametres = {'solver': self.solver, 'tol': self.tol}
             
         self.classif = LinearDiscriminantAnalysis(**parametres)
         

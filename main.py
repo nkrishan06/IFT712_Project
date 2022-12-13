@@ -15,11 +15,7 @@ from tabulate import tabulate
 
 # Importer fichiers spécifiques
 import gestion_donnees as gd
-import SVM
-import k_proches_voisins
-import gaussian_bayesienne
-import arbre_decision
-import regression_logistique
+from classifier import gaussian_bayesienne, arbre_decision, k_proches_voisins, SVM, regression_logistique
 import analyse_discriminant_lineaire
 
 
@@ -28,7 +24,7 @@ from warnings import simplefilter
 simplefilter(action='ignore')
 
 # Ouvrir le csv
-d_base = pd.read_csv(os.getcwd() + '\\train.csv')
+d_base = pd.read_csv(os.getcwd() + '\\dataset\\train.csv')
 
 algorithme = 'Arbre_de_decisions'
 cherche_hyp = True
@@ -81,7 +77,7 @@ def main():
     print(tabulate(tab_perform, headers=['Metrique', 'Train', 'Test'], floatfmt='.4f'))
     
     # phase de preprocessing
-    X_train_pca, X_test_pca = g_donnes.apply_PCA(x_tr, x_ts)
+    X_train_pca, X_test_pca = g_donnees.apply_PCA(x_tr, x_ts)
     
     # Entraînement avec PCA
     debut_e = time.time() # Heure de debut pour mesurer le temps d'entraînement

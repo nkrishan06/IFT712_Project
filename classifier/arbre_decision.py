@@ -40,7 +40,7 @@ class ArbreDecision:
         p_grid = {'criterion': ['gini','entropy','log_loss'], 'splitter' : ['best', 'random'], \
                    'max_depth': valeurs_prof,'min_samples_leaf': valeurs_mf, 'max_leaf_nodes': valeur_mn}
         
-        cross_v = KFold(10, True) # validation croisée
+        cross_v = KFold(n_splits= 10, shuffle= True, random_state= None) # validation croisée
             
         # Recherche d'hyperparamètres
         self.classif = RandomizedSearchCV(estimator=DecisionTreeClassifier(),\

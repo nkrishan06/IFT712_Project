@@ -17,7 +17,7 @@ from tabulate import tabulate
 
 # Importer fichiers spécifiques
 import gestion_donnees as gd
-from classifier import gaussian_bayesienne, arbre_decision, k_proches_voisins, SVM, regression_logistique, \
+from classifiers import gaussian_bayesienne, arbre_decision, k_proches_voisins, SVM, regression_logistique, \
     analyse_discriminant_lineaire
 
 # Ignorer les warnings

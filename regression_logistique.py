@@ -11,31 +11,28 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import RandomizedSearchCV, KFold
 
-
-
 class Regression_logistique:
     def __init__(self):
         """
-        Algorithme de Forêt Aléatoire
+        Algorithme de Regression logistique
         
         """
-        self.penalty = 'l2' # Nombre d arbres à utiliser
-        self.tol = 1e-4 # Profondeur maximale du l'arbre
-        self.solver = 'lbfgs' # Nombre minimal de samples dans une feuille
+        self.penalty = 'l2' # Pénalité
+        self.tol = 1e-4 # seuil d'arrêt
+        self.solver = 'lbfgs' # algorithme d'optimisation
     
     def recherche_hyper(self, x_tr, t_tr):
         """
-        Recherche d'hyperparamètres pour la Forêt Aléatoire
+        Recherche d'hyperparamètres pour la Regression logistique
         
-        x_train: Numpy array avec données d'entraînement
-        t_train: Numpy array avec cibles pour l'entraînement
+        x_tr: Numpy array avec données d'entraînement
+        t_tr: Numpy array avec cibles pour l'entraînement
 
-        Méthode de Randomized Search: 
-            n_arbres: Nombre d'arbres entre 50 et 200
-            prof_max: Profondeur maximale entre 10 et 30
-            msf: Nombre minimal d'échantillons dans une feuille entre 2 et 10
-            Mesure de la qualité de la séparation: giny et entropy
-        
+        Méthode de Grid Search: 
+            penalty: choix entre l1, l2, none et elasticnet
+            tol: seuil d'arrêt, entre 0.00005 et 0.0002
+            solver:  algorithme d'optimisation parmi newto-cg, lbfgs, linlinear, sag, saga
+      
         Retourne un dictionnaire avec les meilleurs hyperparamètres
         """
         valeurs_tol = np.arange(0.5e-4, 2e-3, 0.5e-4)
@@ -54,7 +51,7 @@ class Regression_logistique:
     
     def entrainement(self, x_train, t_train, cherche_hyp):
         """
-        Entraînement avec Forêt Aléatoire
+        Entraînement avec Regression logistique
         
         x_train: Numpy array avec données d'entraînement
         t_train: Numpy array avec cibles pour l'entraînement
@@ -79,7 +76,7 @@ class Regression_logistique:
     
     def prediction(self, x_p):
         """
-        Prédiction avec Forêt Aléatoire
+        Prédiction avec Regression logistique
         
         x_p = Numpy array avec données pour trouver la prédiction
         

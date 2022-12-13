@@ -28,10 +28,15 @@ class SupportVectorMachine:
         """
         Recherche d'hyperparamètres pour SVM, ainsi que le meilleur noyau
         
-        x_train: Numpy array avec données d'entraînement
-        t_train: Numpy array avec cibles pour l'entraînement
+        x_tr: Numpy array avec données d'entraînement
+        t_tr: Numpy array avec cibles pour l'entraînement
 
-        Méthode de Randomized Search. Noyaus evalués: rbf, polynomial et sigmoïde 
+        Méthode de Grid Search :
+            Noyaus evalués: lineaire, rbf, polynomial et sigmoïde
+            C : paramètre de régularisation, entre 2 et 30
+            gamma : coefficient du noyau (pour rbf, poly et sigmoid)
+            degree : degré de la fonction polynomiale (pour poly)
+            coef0 : terme indépendant du noyau (pour poly et sigmoid)
         
         Retourne une dictionaire avec le meilleur noyau et ses meilleurs hyperparamètres
         """

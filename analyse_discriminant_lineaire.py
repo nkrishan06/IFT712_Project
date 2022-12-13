@@ -11,28 +11,25 @@ import numpy as np
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.model_selection import RandomizedSearchCV, KFold
 
-
-
 class Analyse_Discriminant_lineaire:
     def __init__(self):
         """
-        Algorithme d'arbre de décision
+        Analyse_Discriminant_lineaire
         
         """
-        self.solver = 'svd' # Profondeur maximale du l'arbre
-        self.tol = 1e-4  # Nombre minimal d'échantillons dans une feuille
+        self.solver = 'svd' # type du résolveur
+        self.tol = 1e-4  # seuil pour déterminer si l'observation est pertinente
     
     def recherche_hyper(self, x_tr, t_tr):
         """
-        Recherche d'hyperparamètres pour l'Arbre de décisions
+        Recherche d'hyperparamètres pour l'Analyse de Discriminant lineaire
         
-        x_train: Numpy array avec données d'entraînement
-        t_train: Numpy array avec cibles pour l'entraînement
+        x_tr: Numpy array avec données d'entraînement
+        t_tr: Numpy array avec cibles pour l'entraînement
 
         Méthode de Grid Search: 
-            prof_max: Profondeur maximale entre 10 et 50
-            msf: Nombre minimal de samples (données) dans une feuille entre 2 et 10
-            Mesure de la qualité de la séparation: giny et entropy
+            tol: seuil utilisé entre 0,00005 et 0.0001
+            solver : résolveur utilisé entre 'svd', 'lsqr' et 'eigen'
         
         Retourne un dictionnaire avec les meilleurs hyperparamètres
         """
@@ -52,7 +49,7 @@ class Analyse_Discriminant_lineaire:
     
     def entrainement(self, x_train, t_train, cherche_hyp):
         """
-        Entraînement avec Arbre de décision
+        Entraînement avec l'Analyse de Discriminant lineaire
         
         x_train: Numpy array avec données d'entraînement
         t_train: Numpy array avec cibles pour l'entraînement
@@ -60,7 +57,6 @@ class Analyse_Discriminant_lineaire:
         
         Retourne un objet avec le modèle entraîné
         """
-        
         
         if cherche_hyp == True:
             print('Debut de l\'entrainement ADL avec recherche d\'hyperparamètres','\n')
@@ -79,7 +75,7 @@ class Analyse_Discriminant_lineaire:
     
     def prediction(self, x_p):
         """
-        Prédiction avec Arbre de décision
+        Prédiction avec l'Analyse de Discriminant lineaire
         
         x_p = Numpy array avec données pour trouver la prédiction
         

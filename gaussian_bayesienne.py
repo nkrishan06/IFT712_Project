@@ -13,7 +13,7 @@ from sklearn.model_selection import GridSearchCV, KFold
 class GaussianBayes:
     def __init__(self):
         """
-        Algorithme Naïve Bayes Bernoulli
+        Algorithme Gaussian Bayes Bernoulli
         
         """
         self.lissage = 1e-9 # Lissage des données d'entrée
@@ -21,15 +21,13 @@ class GaussianBayes:
     
     def recherche_hyper(self, x_tr, t_tr):
         """
-        Recherche d'hyperparamètres pour Naïve Bayes Bernoulli
+        Recherche d'hyperparamètres pour Gaussian Bayes Bernoulli
         
-        x_train: Numpy array avec données d'entraînement
-        t_train: Numpy array avec cibles pour l'entraînement
+        x_tr: Numpy array avec données d'entraînement
+        t_tr: Numpy array avec cibles pour l'entraînement
 
         Méthode de Grid Search: 
-            prof_max: Profondeur maximale entre 10 et 50
-            msf: Nombre minimal d'échantillons dans une feuille entre 2 et 10
-            Mesure de la qualité de la séparation: giny et entropy
+            var_smoothing: lissage entre 0,0000000005 et 0.000000001
         
         Retourne un dictionnaire avec les meilleurs hyperparamètres
         """
@@ -49,7 +47,7 @@ class GaussianBayes:
     
     def entrainement(self, x_train, t_train, cherche_hyp):
         """
-        Entraînement avec Naïve Bayes Bernoulli
+        Entraînement avec Gaussian Bayes Bernoulli
         
         x_train: Numpy array avec données d'entraînement
         t_train: Numpy array avec cibles pour l'entraînement
@@ -75,7 +73,7 @@ class GaussianBayes:
     
     def prediction(self, x_p):
         """
-        Prédiction avec Naïve Bayes Bernoulli
+        Prédiction avec Gaussian Bayes Bernoulli
         
         x_p = Numpy array avec données pour trouver la prédiction
         

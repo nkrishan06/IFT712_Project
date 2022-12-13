@@ -79,6 +79,31 @@ def main():
     tab_perform = [['Accuracy', acc_tr, acc_ts],['Précision', prs_tr, prs_ts],\
                    ['Rappel', rec_tr, rec_ts],['F-Beta', fbeta_tr, fbeta_ts]]
     print(tabulate(tab_perform, headers=['Metrique', 'Train', 'Test'], floatfmt='.4f'))
+    
+    # phase de preprocessing
+    X_train_pca, X_test_pca = g_donnes.apply_PCA(x_tr, x_ts)
+    
+    # Entraînement avec PCA
+    debut_e = time.time() # Heure de debut pour mesurer le temps d'entraînement
+    classif.entrainement(X_train_pca, t_tr, cherche_hyp)
+    fin_e = time.time() # Heure de fin pour mesurer le temps d'entraînement
+    print('Fin de l\'entrainement. Réalisé en %.2f secondes.'% (fin_e - debut_e),'\n')
+    
+    # Prédictions pour les ensembles d'entraînement et de test
+    predict_tr_pca = classif.prediction(X_train_pca)
+    predict_ts_pca = classif.prediction(X_test_pca)
+    
+    # Métriques pour évaluer l'entraînement et test
+    prs_tr_pca, rec_tr_pca, fbeta_tr_pca, _ = metriques(t_tr, predict_tr, average='macro')
+    prs_ts_pca, rec_ts_pca, fbeta_ts_pca, _ = metriques(t_ts, predict_ts, average='macro')
+    acc_tr_pca = accu(t_tr, predict_tr_pca)
+    acc_ts_pca = accu(t_ts, predict_ts_pca)
+    tab_perform_pca = [['Accuracy', acc_tr_pca, acc_ts_pca],['Précision', prs_tr_pca, prs_ts_pca],\
+                   ['Rappel', rec_tr_pca, rec_ts_pca],['F-Beta', fbeta_tr_pca, fbeta_ts_pca]]
+    print('Entrainement avec PCA')
+    print(tabulate(tab_perform_pca, headers=['Metrique', 'Train', 'Test'], floatfmt='.4f'))
+   
+    return tab_perform, tab_perform_pca
    
     return tab_perform
 

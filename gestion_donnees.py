@@ -9,6 +9,8 @@
 
 from sklearn.preprocessing import LabelEncoder # Gérer les noms des cibles
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
 
 class GestionDonnees :
     def __init__(self, bd) :
@@ -42,6 +44,20 @@ class GestionDonnees :
                 
         return x_tr, x_te, t_tr, t_te
             
+    def apply_PCA(self, X_train, X_test):
+        # Standardise les données sans la cible
+        scaler = StandardScaler()
+        scaler.fit(X_train)
 
+        X_train_scaled = scaler.transform(X_train)
+        X_test_scaled = scaler.transform(X_test)
+
+        # Applique une ACP
+        pca = PCA(n_components= 'mle')
+        pca.fit(X_train_scaled)
+        X_train_pca = pca.transform(X_train_scaled)
+        X_test_pca = pca.transform(X_test_scaled)
+
+        return X_train_pca,X_test_pca
 
 
